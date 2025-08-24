@@ -4,10 +4,10 @@ from flask_cors import CORS
 import werkzeug.utils
 import pandas as pd
 
-# Assuming other modules will be created later
-# from ml_models import predict_transaction
-# from graph_db import get_graph_data, add_transactions_to_graph
-# from utils import process_uploaded_file
+# Import our custom modules
+from ml_models import model_provider
+from graph_db import db_provider
+from utils import process_uploaded_csv
 
 app = Flask(__name__)
 CORS(app) 
@@ -15,8 +15,12 @@ CORS(app)
 UPLOAD_FOLDER = 'uploads'
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
-
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# --- One-time setup: Ensure DB constraints are set ---
+with app.app_context():
+    db_provider.setup_constraints()
+# ----------------------------------------------------
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
@@ -38,13 +42,20 @@ def upload_file():
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(filepath)
             
-            # Placeholder for processing and adding to graph
-            # df = process_uploaded_file(filepath)
-            # add_transactions_to_graph(df)
+            # --- Real logic is now implemented ---
+            # 1. Process the CSV file
+            df = process_uploaded_csv(filepath)
+            if df is None:
+                return jsonify({"error": "Failed to process the uploaded CSV file."}), 400
+            
+            # 2. Add the transactions to our persistent graph
+            db_provider.add_transactions_from_df(df)
+            # ---------------------------------------
 
             return jsonify({
-                "message": "File successfully uploaded and processing started.",
-                "filename": filename
+                "message": f"File '{filename}' successfully processed and {len(df)} transactions merged into the graph.",
+                "filename": filename,
+                "transactions_added": len(df)
             }), 200
         except Exception as e:
             return jsonify({"error": f"An error occurred: {str(e)}"}), 500
@@ -58,21 +69,15 @@ def handle_prediction():
         return jsonify({"error": "Invalid input"}), 400
     
     try:
-        # Placeholder for prediction logic
-        # prediction_result = predict_transaction(data)
+        prediction_result = model_provider.predict(data)
         
-        # Mock response for now
-        import random
-        is_suspicious = random.choice([True, False])
-        confidence = random.uniform(0.5, 0.99)
-        
-        prediction_result = {
-            "transaction_id": data.get("id", "N/A"),
-            "is_suspicious": is_suspicious,
-            "confidence_score": f"{confidence:.2f}",
-            "reason": "High transaction frequency" if is_suspicious else "Normal activity"
-        }
-        
+        # Add a human-readable reason for the prediction
+        prediction_result["transaction_id"] = data.get("id", "N/A")
+        if prediction_result["is_suspicious"]:
+            prediction_result["reason"] = f"Flagged with {prediction_result['confidence_score']:.0%} confidence."
+        else:
+            prediction_result["reason"] = "Considered normal activity."
+
         return jsonify(prediction_result), 200
     except Exception as e:
         return jsonify({"error": f"An error occurred during prediction: {str(e)}"}), 500
@@ -84,24 +89,9 @@ def get_graph():
         return jsonify({"error": "account_id parameter is required"}), 400
         
     try:
-        # Placeholder for graph data fetching
-        # graph_data = get_graph_data(account_id)
-
-        # Mock response for now
-        nodes = [
-            {"id": "acc_1", "label": "Account 1"},
-            {"id": "acc_2", "label": "Account 2"},
-            {"id": "acc_3", "label": "Account 3"},
-            {"id": "acc_4", "label": "Account 4"},
-        ]
-        links = [
-            {"source": "acc_1", "target": "acc_2", "label": "$5000"},
-            {"source": "acc_2", "target": "acc_3", "label": "$4800"},
-            {"source": "acc_3", "target": "acc_1", "label": "$4750"},
-            {"source": "acc_2", "target": "acc_4", "label": "$200"},
-        ]
-        graph_data = {"nodes": nodes, "links": links}
-        
+        graph_data = db_provider.get_transaction_graph(account_id)
+        if not graph_data["nodes"]:
+             return jsonify({"message": f"No transactions found for account '{account_id}'." , "nodes": [], "links": []}), 404
         return jsonify(graph_data), 200
     except Exception as e:
         return jsonify({"error": f"An error occurred fetching graph data: {str(e)}"}), 500
