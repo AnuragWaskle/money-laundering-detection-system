@@ -1,0 +1,104 @@
+/* Import the Inter font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Basic CSS Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #0a0a14; /* Dark blue/black background */
+  color: #e0e0e0;
+  
+  /* Font smoothing with proper fallbacks */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* Text size adjust with vendor prefixes */
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  
+  /* User select with vendor prefixes */
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+  
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar for a more modern look */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a2e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00f2ff;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00c2ff;
+}
+
+/* Fix for elements that might use backdrop-filter */
+.backdrop-blur {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* Fix for elements that might use filter effects */
+.filter-blur {
+  -webkit-filter: blur(5px);
+  filter: blur(5px);
+}
+
+/* Fix for forced-color-adjust (mainly for Windows high contrast mode) */
+* {
+  forced-color-adjust: auto;
+}
+
+/* Modern image-set syntax fix for high-DPI displays */
+.high-res-image {
+  background-image: url('default-image.png');
+  background-image: -webkit-image-set(
+    url('image-1x.png') 1x,
+    url('image-2x.png') 2x
+  );
+  background-image: image-set(
+    url('image-1x.png') 1x,
+    url('image-2x.png') 2x
+  );
+}
+
+/* Override any existing webkit-image-set issues */
+*[style*="-webkit-image-set"] {
+  background-image: none !important;
+}
+
+/* Fix for any scrollbar webkit issues */
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* Ensure proper text rendering across browsers */
+* {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
