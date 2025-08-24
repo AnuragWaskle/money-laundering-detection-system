@@ -2,13 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 /* Basic CSS Reset */
-<<<<<<< HEAD
 *, *::before, *::after {
-=======
-*,
-*::before,
-*::after {
->>>>>>> 34f40f9e006e9535e4d203671532bba432ab719a
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -18,7 +12,6 @@ body {
   font-family: 'Inter', sans-serif;
   background-color: #0a0a14; /* Dark blue/black background */
   color: #e0e0e0;
-<<<<<<< HEAD
   
   /* Font smoothing with proper fallbacks */
   -webkit-font-smoothing: antialiased;
@@ -36,10 +29,6 @@ body {
   -ms-user-select: text;
   user-select: text;
   
-=======
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
->>>>>>> 34f40f9e006e9535e4d203671532bba432ab719a
   overflow-x: hidden;
 }
 
@@ -60,7 +49,6 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #00c2ff;
 }
-<<<<<<< HEAD
 
 /* Fix for elements that might use backdrop-filter */
 .backdrop-blur {
@@ -114,5 +102,3 @@ body {
   -ms-user-select: text;
   user-select: text;
 }
-=======
->>>>>>> 34f40f9e006e9535e4d203671532bba432ab719a

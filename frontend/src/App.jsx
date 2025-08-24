@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import FileUpload from './components/FileUpload';
@@ -155,22 +154,8 @@ function App() {
           </div>
         )}
       </main>
-=======
-import React from 'react';
-import Dashboard from './pages/Dashboard';
-import './index.css'; // Importing global styles
-
-function App() {
-  return (
-    <div className="App">
-      <Dashboard />
->>>>>>> 34f40f9e006e9535e4d203671532bba432ab719a
     </div>
   );
 }
 
-<<<<<<< HEAD
 export default App;
-=======
-export default App;
->>>>>>> 34f40f9e006e9535e4d203671532bba432ab719a
