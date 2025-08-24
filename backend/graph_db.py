@@ -16,6 +16,7 @@ class GraphDatabase:
 
     def setup_constraints(self):
         if not self.graph:
+            print("No graph connection available.")
             return
         try:
             # This constraint ensures that Account nodes are unique based on their ID
@@ -29,10 +30,9 @@ class GraphDatabase:
         if not self.graph:
             print("No graph connection available.")
             return
-
         print("Merging transactions into the persistent graph...")
         tx = self.graph.begin()
-        for index, row in df.iterrows():
+        for _, row in df.iterrows():
             sender_id = str(row['nameOrig'])
             receiver_id = str(row['nameDest'])
             
@@ -44,7 +44,7 @@ class GraphDatabase:
             tx.merge(receiver_node, "Account", "id")
             
             # CREATE a new relationship for each transaction.
-            # The relationship type is now dynamic based on the data (e.g., 'TRANSFER', 'CASH_OUT').
+            # The relationship type is dynamic based on the data (e.g., 'TRANSFER', 'CASH_OUT').
             transaction_rel = Relationship(
                 sender_node, 
                 row['type'], 
@@ -61,7 +61,6 @@ class GraphDatabase:
     def get_transaction_graph(self, account_id: str, limit: int = 50):
         if not self.graph:
             return {"nodes": [], "links": []}
-
         query = """
         MATCH (a:Account {id: $account_id})-[r]-(b)
         RETURN a, r, b
@@ -89,6 +88,20 @@ class GraphDatabase:
             })
             
         return {"nodes": list(nodes.values()), "links": links}
+
+    def get_account_history(self, account_id: str, limit: int = 100):
+        """Fetches all incoming and outgoing transactions for a given account."""
+        if not self.graph:
+            return None
+        query = """
+        MATCH (a:Account {id: $account_id})-[r]-(b:Account)
+        RETURN a.id as account, type(r) as type, r.amount as amount, b.id as other_party,
+               CASE WHEN startNode(r) = a THEN 'outgoing' ELSE 'incoming' END as direction
+        ORDER BY r.timestamp DESC
+        LIMIT $limit
+        """
+        results = self.graph.run(query, account_id=account_id, limit=limit)
+        return pd.DataFrame(results.data())
 
     def find_cycles(self, account_id: str, max_length: int = 4):
         if not self.graph:

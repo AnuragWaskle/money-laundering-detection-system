@@ -1,0 +1,9 @@
+services:
+  backend:
+    
+    environment:
+      - NEO4J_URI=bolt://neo4j:7687  # The address of the database
+      - NEO4J_USER=neo4j             # The username
+      - NEO4J_PASSWORD=password      # The password
+    depends_on:
+      - neo4j # Ensures the database starts before the backend

@@ -15,7 +15,10 @@ const FileUpload = ({ onFileUpload }) => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { 'text/csv': ['.csv'] },
+    accept: { 
+      'text/csv': ['.csv'],
+      'application/pdf': ['.pdf'] 
+    },
     multiple: false,
   });
 
@@ -38,9 +41,9 @@ const FileUpload = ({ onFileUpload }) => {
           </svg>
         </div>
         {isDragActive ? (
-          <p>Drop the file here ...</p>
+          <p>Drop a file here ...</p>
         ) : (
-          <p>Drag 'n' drop a CSV file here, or click to select</p>
+          <p>Drag 'n' drop a CSV or PDF file here, or click to select</p>
         )}
       </div>
       {uploadedFile && (

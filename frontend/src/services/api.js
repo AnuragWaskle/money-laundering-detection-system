@@ -1,41 +1,41 @@
 import axios from 'axios';
 
-// Create an Axios instance with a base URL.
-// This makes it easy to change the API endpoint in one place.
 const apiClient = axios.create({
-  baseURL: 'http://localhost:5001/api', // The address of our Flask backend
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: 'http://localhost:5001/api',
+  headers: { 'Content-Type': 'application/json' },
 });
 
-/**
- * Uploads a CSV file to the backend for processing.
- * @param {File} file - The CSV file to upload.
- * @returns {Promise<Object>} The response data from the server.
- */
-export const uploadFile = async (file) => {
+export const uploadCsvFile = async (file, mapping) => {
   const formData = new FormData();
   formData.append('file', file);
+  formData.append('mapping', JSON.stringify(mapping));
 
   try {
-    const response = await apiClient.post('/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+    const response = await apiClient.post('/upload-csv', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
     return response.data;
   } catch (error) {
-    console.error('Error uploading file:', error.response ? error.response.data : error.message);
+    console.error('Error uploading CSV file:', error.response ? error.response.data : error.message);
     throw error;
   }
 };
 
-/**
- * Fetches graph data for a specific account ID.
- * @param {string} accountId - The ID of the account to visualize.
- * @returns {Promise<Object>} The graph data (nodes and links).
- */
+export const uploadPdfFile = async (file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const response = await apiClient.post('/upload-pdf', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error uploading PDF file:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+};
+
 export const getGraphDataForAccount = async (accountId) => {
   try {
     const response = await apiClient.get(`/graph-data`, {
@@ -48,17 +48,32 @@ export const getGraphDataForAccount = async (accountId) => {
   }
 };
 
-/**
- * Sends a single transaction object to the backend for a fraud prediction.
- * @param {Object} transactionData - The transaction data.
- * @returns {Promise<Object>} The prediction result.
- */
 export const getPrediction = async (transactionData) => {
-    try {
-        const response = await apiClient.post('/predict', transactionData);
-        return response.data;
-    } catch (error) {
-        console.error('Error getting prediction:', error.response ? error.response.data : error.message);
-        throw error;
-    }
+  try {
+    const response = await apiClient.post('/predict', transactionData);
+    return response.data;
+  } catch (error) {
+    console.error('Error getting prediction:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+};
+
+export const getAccountSummary = async (accountId) => {
+  try {
+    const response = await apiClient.get(`/account-summary/${accountId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching account summary:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+};
+
+export const analyzeGraphWithGNN = async (accountId) => {
+  try {
+    const response = await apiClient.get(`/analyze-graph/${accountId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error analyzing graph with GNN:', error.response ? error.response.data : error.message);
+    throw error;
+  }
 };
