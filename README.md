@@ -1,29 +1,33 @@
 # AML Guardian: AI-Powered Money Laundering Detection System
 
-AML Guardian is a full-stack web application designed for the Cybershield Hackathon 2025. It leverages machine learning and graph analytics to detect and visualize sophisticated money laundering patterns in transaction data.
+AML Guardian is a full-stack web application that leverages machine learning and graph analytics to detect and visualize sophisticated money laundering patterns in transaction data.
 
-![AML Guardian Dashboard Screenshot](https://placehold.co/800x400/0a0a14/00f2ff?text=AML+Guardian+UI)
+![AML Guardian Dashboard Screenshot](docs/AML_Guardian.png)
 
 ---
 
 ## ✨ Features
 
-- **High-Accuracy ML Model**: Utilizes an XGBoost model trained on a synthetic dataset to predict suspicious transactions with over 99% accuracy.
-- **Interactive Graph Visualization**: Employs Neo4j and D3.js to visualize transaction networks, making it easy to spot patterns like cycles and smurfing.
-- **Drag-and-Drop File Upload**: Allows users to easily upload CSV files of transaction data for analysis.
-- **Modern Tech Stack**: Built with a robust and scalable stack including React, Flask, Neo4j, and Docker.
+- **High-Accuracy ML Model:** XGBoost and GNN models for robust fraud detection.
+- **Graph Visualization:** Neo4j and D3.js for interactive network analysis.
+- **Drag-and-Drop File Upload:** Simple CSV upload for transaction analysis.
+- **Modern Stack:** React, Flask, Neo4j, Docker, and more.
 
 ---
 
 ## 🛠️ Technology Stack
 
-- **Frontend**: React, Vite, D3.js, Axios, Tailwind CSS (implicitly via CSS files)
+- **Frontend:** React, Vite, D3.js, Axios, CSS Modules
+- **Backend:** Python, Flask, Py2neo
+- **Machine Learning:** Scikit-learn, XGBoost, Pandas, Imblearn, PyTorch (GNN)
+- **Database:** Neo4j Graph Database
+- **Deployment:** Docker, Docker Compose
 
 # AML Guardian: AI-Powered Money Laundering Detection System
 
 AML Guardian is a full-stack web application that leverages machine learning and graph analytics to detect and visualize sophisticated money laundering patterns in transaction data.
 
-![AML Guardian Dashboard Screenshot](https://placehold.co/800x400/0a0a14/00f2ff?text=AML+Guardian+UI)
+![AML Guardian Dashboard Screenshot](docs/AML_Guardian.png)
 
 ---
 
@@ -48,7 +52,7 @@ AML Guardian is a full-stack web application that leverages machine learning and
 
 ## 📁 Project Structure
 
-```
+```text
 backend/    # Flask API, ML models, Neo4j integration
 frontend/   # React app for UI and graph visualization
 extension/  # Chrome extension for account analysis
