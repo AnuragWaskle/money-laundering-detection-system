@@ -1,8 +1,23 @@
+
 # AML Guardian: AI-Powered Money Laundering Detection System
 
 AML Guardian is a full-stack web application that leverages machine learning and graph analytics to detect and visualize sophisticated money laundering patterns in transaction data.
 
 ![AML Guardian Dashboard Screenshot](docs/AML_Guardian.png)
+
+---
+
+## 👥 Group Members
+
+<table>
+	<tr>
+		<td align="center"><img src="https://placehold.co/100x100/0a0a14/00f2ff?text=W.W" width="80" /><br/><b>Walter White</b><br/><i>Group Leader</i></td>
+		<td align="center"><img src="https://placehold.co/100x100/0a0a14/00f2ff?text=J.P" width="80" /><br/><b>Jesse Pinkman</b></td>
+		<td align="center"><img src="https://placehold.co/100x100/0a0a14/00f2ff?text=S.G" width="80" /><br/><b>Saul Goodman</b></td>
+		<td align="center"><img src="https://placehold.co/100x100/0a0a14/00f2ff?text=S.W" width="80" /><br/><b>Skyler White</b></td>
+		<td align="center"><img src="https://placehold.co/100x100/0a0a14/00f2ff?text=H.S" width="80" /><br/><b>Hank Schrader</b></td>
+	</tr>
+</table>
 
 ---
 
