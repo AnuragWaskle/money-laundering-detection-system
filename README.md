@@ -1,4 +1,3 @@
-
 # AML Guardian: AI-Powered Money Laundering Detection System
 
 AML Guardian is a full-stack web application that leverages machine learning and graph analytics to detect and visualize sophisticated money laundering patterns in transaction data.
