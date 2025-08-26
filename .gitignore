@@ -11,3 +11,9 @@ frontend/node_modules/.vite/
 __pycache__/
 *.DS_Store
 ml/data/raw/PS_20174392719_1491204439457_log.csv
+
+# Python virtual environments
+venv/
+.env/
+*.pyc
+__pycache__/
