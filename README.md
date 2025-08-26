@@ -116,13 +116,28 @@ docker-compose up --build
 
 ### Backend
 
+**To run any Python code or the backend server locally, always use a virtual environment and install dependencies from `requirements.txt`:**
+
+```bash
+# Create a virtual environment (only once)
+python -m venv venv
+# Activate the environment (Windows)
+venv\Scripts\activate
+# Or on Mac/Linux:
+# source venv/bin/activate
+# Upgrade pip, setuptools, wheel (recommended)
+python -m pip install --upgrade pip setuptools wheel
+# Install all dependencies
+pip install -r requirements.txt
+```
+
 ```bash
 cd backend
-python -m venv venv
-venv\Scripts\activate  # On Windows
-pip install -r requirements.txt
+# Run the backend server
 python app.py
 ```
+
+> **Note:** Always activate your virtual environment before running Python scripts or Jupyter notebooks to ensure the correct dependencies are used.
 
 ### Frontend
 
