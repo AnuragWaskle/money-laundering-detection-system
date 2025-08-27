@@ -170,10 +170,9 @@ npm run dev
 - **Frontend:** Verify UI and API calls at the frontend URL.
 - **Extension:** Test popup with a valid account ID from Neo4j.
 
----
+<!-- ---
 
 ## 📝 Notes
 
 - Ensure Neo4j credentials are set in `backend/.env` if you override defaults.
-- Replace placeholder icons in `extension/icons/` with your own PNGs (16x16, 48x48, 128x128).
-- For large datasets, consider using Git LFS.
+- For large datasets, consider using Git LFS. -->
