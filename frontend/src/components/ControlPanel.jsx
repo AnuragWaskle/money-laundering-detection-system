@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import React, { useState } from 'react';
 // import FileUpload from './FileUpload';
 // import Button from './Button';
@@ -47,13 +48,19 @@
 
 
 
+=======
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
 import React, { useState } from 'react';
 import FileUpload from './FileUpload';
 import Button from './Button';
 import { FaSearch } from 'react-icons/fa';
 import '../assets/ControlPanel.css';
 
+<<<<<<< HEAD
 const ControlPanel = ({ onFileUpload, onSearch, onHighlightCycles, onShowHighRiskNodes }) => {
+=======
+const ControlPanel = ({ onFileUpload, onSearch }) => {
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = (e) => {
@@ -85,12 +92,17 @@ const ControlPanel = ({ onFileUpload, onSearch, onHighlightCycles, onShowHighRis
       
       <div className="panel-section">
         <h3>Analysis Tools</h3>
+<<<<<<< HEAD
         <Button variant="secondary" onClick={onHighlightCycles}>
           Highlight Cycles
         </Button>
         <Button variant="secondary" onClick={onShowHighRiskNodes}>
           Show High-Risk Nodes
         </Button>
+=======
+        <Button variant="secondary">Highlight Cycles</Button>
+        <Button variant="secondary">Show High-Risk Nodes</Button>
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
       </div>
     </div>
   );

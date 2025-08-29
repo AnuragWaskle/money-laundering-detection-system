@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # from py2neo import Graph, Node, Relationship
 # import pandas as pd
 # from config import Config
@@ -394,6 +395,8 @@
 
 
 
+=======
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
 from py2neo import Graph, Node, Relationship
 import pandas as pd
 from config import Config
@@ -415,6 +418,11 @@ class GraphDatabase:
             print("No graph connection available.")
             return
         try:
+<<<<<<< HEAD
+=======
+            # This constraint ensures that Account nodes are unique based on their ID
+            # and significantly speeds up the MERGE operations.
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
             self.graph.run("CREATE CONSTRAINT IF NOT EXISTS FOR (a:Account) REQUIRE a.id IS UNIQUE")
             print("Unique constraint on Account nodes ensured.")
         except Exception as e:
@@ -430,12 +438,21 @@ class GraphDatabase:
             sender_id = str(row['nameOrig'])
             receiver_id = str(row['nameDest'])
             
+<<<<<<< HEAD
+=======
+            # MERGE finds an existing node or creates a new one, preventing duplicates.
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
             sender_node = Node("Account", id=sender_id)
             tx.merge(sender_node, "Account", "id")
             
             receiver_node = Node("Account", id=receiver_id)
             tx.merge(receiver_node, "Account", "id")
             
+<<<<<<< HEAD
+=======
+            # CREATE a new relationship for each transaction.
+            # The relationship type is dynamic based on the data (e.g., 'TRANSFER', 'CASH_OUT').
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
             transaction_rel = Relationship(
                 sender_node, 
                 row['type'], 
@@ -452,17 +469,23 @@ class GraphDatabase:
     def get_transaction_graph(self, account_id: str, limit: int = 50):
         if not self.graph:
             return {"nodes": [], "links": []}
+<<<<<<< HEAD
         # --- CORRECTED QUERY ---
         # This query now finds the account and then matches any relationships
         # connected to it, regardless of direction.
         query = """
         MATCH (a:Account {id: $account_id})
         OPTIONAL MATCH (a)-[r]-(b)
+=======
+        query = """
+        MATCH (a:Account {id: $account_id})-[r]-(b)
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
         RETURN a, r, b
         LIMIT $limit
         """
         results = self.graph.run(query, account_id=account_id, limit=limit).data()
         
+<<<<<<< HEAD
         nodes, links = {}, []
         
         # Handle case where the node exists but has no transactions
@@ -476,6 +499,27 @@ class GraphDatabase:
             nodes[row['b']['id']] = {"id": row['b']['id'], "label": row['b']['id']}
             links.append({"source": row['r'].start_node['id'], "target": row['r'].end_node['id'],
                           "label": type(row['r']).__name__, "amount": row['r'].get('amount', 0)})
+=======
+        nodes = {}
+        links = []
+
+        for row in results:
+            node_a_id = row['a']['id']
+            node_b_id = row['b']['id']
+            rel = row['r']
+            rel_type = type(rel).__name__
+
+            nodes[node_a_id] = {"id": node_a_id, "label": node_a_id}
+            nodes[node_b_id] = {"id": node_b_id, "label": node_b_id}
+
+            links.append({
+                "source": rel.start_node['id'],
+                "target": rel.end_node['id'],
+                "label": rel_type,
+                "amount": rel.get('amount', 0)
+            })
+            
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
         return {"nodes": list(nodes.values()), "links": links}
 
     def get_account_history(self, account_id: str, limit: int = 100):
@@ -492,6 +536,7 @@ class GraphDatabase:
         results = self.graph.run(query, account_id=account_id, limit=limit)
         return pd.DataFrame(results.data())
 
+<<<<<<< HEAD
     # --- EXISTING ANALYSIS FUNCTIONS ---
     def find_all_cycles(self, max_length: int = 5):
         """Finds all circular transaction paths in the entire graph."""
@@ -615,5 +660,16 @@ class GraphDatabase:
         except Exception as e:
             print(f"Error finding high-risk nodes with scores: {e}")
             return []
+=======
+    def find_cycles(self, account_id: str, max_length: int = 4):
+        if not self.graph:
+            return []
+        query = """
+        MATCH p=(a:Account {id: $account_id})-[*1..%d]->(a)
+        RETURN p
+        """ % max_length
+        results = self.graph.run(query, account_id=account_id).data()
+        return [row['p'] for row in results]
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
 
 db_provider = GraphDatabase()

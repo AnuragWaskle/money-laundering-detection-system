@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import React, { useEffect, useRef, useLayoutEffect } from 'react';
 // import * as d3 from 'd3';
 // import '../assets/GraphVisualizer.css';
@@ -65,11 +66,17 @@
 
 // export default GraphVisualizer;
 
+=======
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
 import React, { useEffect, useRef, useLayoutEffect } from 'react';
 import * as d3 from 'd3';
 import '../assets/GraphVisualizer.css';
 
+<<<<<<< HEAD
 const GraphVisualizer = ({ data, onNodeClick, selectedNodeId, highlightedNodes = [] }) => {
+=======
+const GraphVisualizer = ({ data, onNodeClick, selectedNodeId }) => {
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
   const svgRef = useRef();
   const containerRef = useRef();
 
@@ -89,6 +96,7 @@ const GraphVisualizer = ({ data, onNodeClick, selectedNodeId, highlightedNodes =
     const link = svg.append("g").attr("class", "links")
       .selectAll("line").data(data.links).enter().append("line");
 
+<<<<<<< HEAD
     // Helper function to determine the CSS class for a node
     const getNodeClass = (d) => {
       let classes = 'node';
@@ -104,6 +112,12 @@ const GraphVisualizer = ({ data, onNodeClick, selectedNodeId, highlightedNodes =
       .selectAll("circle").data(data.nodes).enter().append("circle")
       .attr("r", 12)
       .attr("class", getNodeClass) // Use the helper function here
+=======
+    const node = svg.append("g").attr("class", "nodes")
+      .selectAll("circle").data(data.nodes).enter().append("circle")
+      .attr("r", 12)
+      .attr("class", d => d.id === selectedNodeId ? 'node selected' : 'node')
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
       .on("click", (event, d) => {
         onNodeClick(d);
       })
@@ -132,7 +146,11 @@ const GraphVisualizer = ({ data, onNodeClick, selectedNodeId, highlightedNodes =
       d.fx = null; d.fy = null;
     }
 
+<<<<<<< HEAD
   }, [data, selectedNodeId, onNodeClick, highlightedNodes]);
+=======
+  }, [data, selectedNodeId, onNodeClick]);
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
 
   return (
     <div ref={containerRef} className="graph-container">

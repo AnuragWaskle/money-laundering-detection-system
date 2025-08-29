@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # # Use an official Python runtime as a parent image
 # FROM python:3.10-slim
 
@@ -27,6 +28,8 @@
 
 
 
+=======
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
 # Use an official Python runtime as a parent image
 FROM python:3.10-slim
 
@@ -46,9 +49,18 @@ COPY . .
 EXPOSE 5001
 
 # Define environment variable
+<<<<<<< HEAD
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_RUN_PORT=5001
 
 # Run app.py when the container launches
 CMD ["flask", "run"]
+=======
+ENV FLASK_APP app.py
+ENV FLASK_RUN_HOST 0.0.0.0
+ENV FLASK_RUN_PORT 5001
+
+# Run app.py when the container launches
+CMD ["flask", "run"]
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533

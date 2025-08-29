@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* .graph-container {
+=======
+.graph-container {
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
   width: 100%;
   height: 100%;
   background: rgba(10, 10, 20, 0.5);
@@ -18,6 +22,7 @@
   transform: scale(1.2);
 }
 
+<<<<<<< HEAD
 /* .node.selected {
   fill: #ff4d4d; /* Highlight color for selected node */
   /* stroke: #ffffff;
@@ -52,10 +57,15 @@
 
 .node.selected {
   fill: #ff4d4d; /* Clicked node color (red) */
+=======
+.node.selected {
+  fill: #ff4d4d; /* Highlight color for selected node */
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
   stroke: #ffffff;
   stroke-width: 4px;
 }
 
+<<<<<<< HEAD
 /* --- NEW HIGHLIGHT STYLE --- */
 .node.highlighted {
   fill: #ffab00; /* Analysis result color (orange/yellow) */
@@ -70,6 +80,8 @@
   font-family: 'Inter', sans-serif;
 }
 
+=======
+>>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
 .links line {
   stroke: rgba(255, 255, 255, 0.2);
   stroke-width: 1.5px;
