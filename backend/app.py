@@ -27,15 +27,6 @@ def health_check():
 def handle_realtime_transaction():
     transaction_data = request.get_json()
 
-    required_fields = ['step', 'type', 'amount', 'nameOrig', 'nameDest']
-    if not transaction_data or not all(field in transaction_data for field in required_fields):
-        return jsonify({"error": "Invalid or incomplete transaction data"}), 400
-    try:
-        prediction = model_provider.predict(transaction_data)
-        df = pd.DataFrame([transaction_data])
-        db_provider.add_transactions_from_df(df)
-        response = { "message": "Transaction processed", **prediction }
-
     # Validate the incoming data
     required_fields = ['step', 'type', 'amount', 'nameOrig', 'nameDest']
     if not transaction_data or not all(field in transaction_data for field in required_fields):
