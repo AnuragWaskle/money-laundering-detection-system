@@ -119,10 +119,7 @@ docker-compose up --build
 **To run any Python code or the backend server locally, always use a virtual environment and install dependencies from `requirements.txt`:**
 
 ```bash
-<<<<<<< HEAD
-=======
 cd backend
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
 # Create a virtual environment (only once)
 python -m venv venv
 # Activate the environment (Windows)
@@ -133,13 +130,6 @@ venv\Scripts\activate
 python -m pip install --upgrade pip setuptools wheel
 # Install all dependencies
 pip install -r requirements.txt
-<<<<<<< HEAD
-```
-
-```bash
-cd backend
-=======
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
 # Run the backend server
 python app.py
 ```
@@ -177,18 +167,10 @@ npm run dev
 - **Frontend:** Verify UI and API calls at the frontend URL.
 - **Extension:** Test popup with a valid account ID from Neo4j.
 
-<<<<<<< HEAD
----
-=======
 <!-- ---
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
 
 ## 📝 Notes
 
 - Ensure Neo4j credentials are set in `backend/.env` if you override defaults.
-<<<<<<< HEAD
 - Replace placeholder icons in `extension/icons/` with your own PNGs (16x16, 48x48, 128x128).
 - For large datasets, consider using Git LFS.
-=======
-- For large datasets, consider using Git LFS. -->
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // import React from 'react';
 // import '../assets/Navbar.css';
 
@@ -37,20 +36,6 @@
 
 
 
-=======
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
-import React from 'react';
-import '../assets/Navbar.css';
-
-const Navbar = () => {
-<<<<<<< HEAD
-  // In a real multi-page app, you would use the <Link> component from a library
-  // like 'react-router-dom' instead of <a> tags to prevent full page reloads.
-  // Example: import { Link } from 'react-router-dom';
-  // And then use <Link to="/" className="nav-link">...</Link>
-
-=======
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
   return (
     <nav className="navbar">
       <div className="navbar-brand">
@@ -72,14 +57,9 @@ const Navbar = () => {
         <h1>AML Guardian</h1>
       </div>
       <div className="navbar-links">
-<<<<<<< HEAD
         <a href="/" className="nav-link">Global Dashboard</a>
         <a href="/cases" className="nav-link">Case Management</a>
         <a href="/trace" className="nav-link">Trace & Investigate</a>
-=======
-        <a href="#dashboard" className="nav-link">Dashboard</a>
-        <a href="#docs" className="nav-link">Documentation</a>
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
         <a href="#contact" className="nav-link contact-link">Contact</a>
       </div>
     </nav>

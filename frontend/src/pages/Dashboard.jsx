@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // // import React, { useState, useCallback } from 'react';
 // // import Papa from 'papaparse';
 // // import Navbar from '../components/Navbar';
@@ -319,33 +318,6 @@
 // export default Dashboard;
 
 
-=======
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
-import React, { useState, useCallback } from 'react';
-import Papa from 'papaparse';
-import Navbar from '../components/Navbar';
-import ControlPanel from '../components/ControlPanel';
-import InfoPanel from '../components/InfoPanel';
-import GraphVisualizer from '../components/GraphVisualizer';
-import Loader from '../components/Loader';
-import MappingModal from '../components/MappingModal';
-<<<<<<< HEAD
-import { 
-  uploadCsvFile, 
-  uploadPdfFile, 
-  getGraphDataForAccount, 
-  getAccountSummary, 
-  analyzeGraphWithGNN,
-  findCyclesInGraph,
-  findHighRiskNodesInGraph
-} from '../services/api';
-import '../assets/Dashboard.css';
-import { FaProjectDiagram, FaCheckCircle } from 'react-icons/fa';
-=======
-import { uploadCsvFile, uploadPdfFile, getGraphDataForAccount, getAccountSummary, analyzeGraphWithGNN } from '../services/api';
-import '../assets/Dashboard.css';
-import { FaProjectDiagram } from 'react-icons/fa';
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
 
 const Dashboard = () => {
   // State Management
@@ -355,7 +327,6 @@ const Dashboard = () => {
   const [graphData, setGraphData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-<<<<<<< HEAD
   const [successMessage, setSuccessMessage] = useState('');
 
   // Interactive Panel State
@@ -369,20 +340,6 @@ const Dashboard = () => {
   // --- Data Ingestion Logic ---
   const handleFileUpload = (file) => {
     if (!file) { setSelectedFile(null); return; }
-=======
-
-  // State for the new interactive panels
-  const [selectedNode, setSelectedNode] = useState(null);
-  const [summary, setSummary] = useState('');
-  const [gnnAnalysis, setGnnAnalysis] = useState(null);
-
-  // --- Data Ingestion Logic ---
-  const handleFileUpload = (file) => {
-    if (!file) {
-      setSelectedFile(null);
-      return;
-    }
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
     setSelectedFile(file);
     if (file.type === 'text/csv') {
       Papa.parse(file, {
@@ -407,12 +364,6 @@ const Dashboard = () => {
 
   const processFile = async (uploadFunction) => {
     setIsLoading(true);
-<<<<<<< HEAD
-    setError(''); setSuccessMessage(''); setGraphData(null); setSelectedNode(null);
-    try {
-      const response = await uploadFunction();
-      setSuccessMessage(response.message || 'File processed successfully.');
-=======
     setError('');
     setGraphData(null);
     setSelectedNode(null);
@@ -420,7 +371,6 @@ const Dashboard = () => {
       await uploadFunction();
       // After upload, automatically search for a default account to show a graph
       await handleSearch('C12345678'); 
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
     } catch (err) {
       setError(err.response?.data?.error || 'An error occurred during processing.');
     } finally {
@@ -428,18 +378,10 @@ const Dashboard = () => {
     }
   };
 
-<<<<<<< HEAD
   // --- Graph Interaction & Analysis Logic ---
   const handleSearch = useCallback(async (accountId) => {
     setIsLoading(true);
     setError(''); setSuccessMessage(''); setSelectedNode(null); setHighlightedNodes([]);
-=======
-  // --- Graph Interaction Logic ---
-  const handleSearch = useCallback(async (accountId) => {
-    setIsLoading(true);
-    setError('');
-    setSelectedNode(null);
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
     try {
       const graphResponse = await getGraphDataForAccount(accountId);
       setGraphData(graphResponse);
@@ -453,16 +395,11 @@ const Dashboard = () => {
 
   const handleNodeClick = useCallback(async (node) => {
     setSelectedNode(node);
-<<<<<<< HEAD
-    setSummary('Loading...'); setGnnAnalysis(null);
-    try {
-=======
     setSummary('');
     setGnnAnalysis(null);
     
     try {
       // Fetch summary and GNN analysis in parallel
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
       const [summaryRes, gnnRes] = await Promise.all([
         getAccountSummary(node.id),
         analyzeGraphWithGNN(node.id)
@@ -471,7 +408,6 @@ const Dashboard = () => {
       setGnnAnalysis(gnnRes);
     } catch (err) {
       console.error("Error fetching node details:", err);
-<<<<<<< HEAD
       setSummary('Could not load summary for this account.');
     }
   }, []);
@@ -527,35 +463,10 @@ const Dashboard = () => {
               </div>
             )}
             {graphData && !error ? (
-=======
-      setSummary('Could not load summary.');
-    }
-  }, []);
-
-  return (
-    <div className="dashboard">
-      <Navbar />
-      <MappingModal 
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        headers={csvHeaders}
-        onConfirm={handleConfirmMapping}
-      />
-      <div className="main-layout">
-        <ControlPanel onFileUpload={handleFileUpload} onSearch={handleSearch} />
-        
-        <main className="graph-main-panel">
-          <h2>Transaction Network Explorer</h2>
-          <div className="graph-wrapper">
-            {isLoading && <Loader />}
-            {error && !isLoading && <p className="error-message">{error}</p>}
-            {graphData ? (
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
               <GraphVisualizer 
                 data={graphData} 
                 onNodeClick={handleNodeClick}
                 selectedNodeId={selectedNode?.id}
-<<<<<<< HEAD
                 highlightedNodes={highlightedNodes}
               />
             ) : (
@@ -564,29 +475,17 @@ const Dashboard = () => {
                   <div className="icon">🔍</div>
                   <h2>AML Guardian</h2>
                   <p>Upload data or search for an account ID to begin your investigation.</p>
-=======
-              />
-            ) : (
-              !isLoading && (
-                <div className="placeholder-graph">
-                  <FaProjectDiagram size={60} />
-                  <p>Search for an account or upload data to begin.</p>
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
                 </div>
               )
             )}
           </div>
         </main>
-<<<<<<< HEAD
-        <InfoPanel selectedNode={selectedNode} summary={summary} gnnAnalysis={gnnAnalysis} />
-=======
 
         <InfoPanel 
           selectedNode={selectedNode}
           summary={summary}
           gnnAnalysis={gnnAnalysis}
         />
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
       </div>
     </div>
   );
