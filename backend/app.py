@@ -26,7 +26,7 @@ def health_check():
 @app.route('/api/transaction', methods=['POST'])
 def handle_realtime_transaction():
     transaction_data = request.get_json()
-<<<<<<< HEAD
+
     required_fields = ['step', 'type', 'amount', 'nameOrig', 'nameDest']
     if not transaction_data or not all(field in transaction_data for field in required_fields):
         return jsonify({"error": "Invalid or incomplete transaction data"}), 400
@@ -35,8 +35,7 @@ def handle_realtime_transaction():
         df = pd.DataFrame([transaction_data])
         db_provider.add_transactions_from_df(df)
         response = { "message": "Transaction processed", **prediction }
-=======
-    
+
     # Validate the incoming data
     required_fields = ['step', 'type', 'amount', 'nameOrig', 'nameDest']
     if not transaction_data or not all(field in transaction_data for field in required_fields):
@@ -57,7 +56,7 @@ def handle_realtime_transaction():
             "is_suspicious": prediction.get('is_suspicious'),
             "confidence_score": prediction.get('confidence_score')
         }
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
+
         return jsonify(response), 201
     except Exception as e:
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
@@ -66,32 +65,29 @@ def handle_realtime_transaction():
 def upload_csv():
     if 'file' not in request.files or 'mapping' not in request.form:
         return jsonify({"error": "File or mapping data is missing"}), 400
-<<<<<<< HEAD
+
     file = request.files['file']
     mapping_json = request.form['mapping']
     if file.filename == '' or not file.filename.endswith('.csv'):
         return jsonify({"error": "Invalid or missing CSV file"}), 400
-=======
-    
+
     file = request.files['file']
     mapping_json = request.form['mapping']
     
     if file.filename == '' or not file.filename.endswith('.csv'):
         return jsonify({"error": "Invalid or missing CSV file"}), 400
 
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
     try:
         filename = werkzeug.utils.secure_filename(file.filename)
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(filepath)
-<<<<<<< HEAD
+
         df = process_uploaded_csv(filepath, mapping_json)
         if df is None:
             return jsonify({"error": "Failed to process CSV with the provided mapping."}), 400
         db_provider.add_transactions_from_df(df)
         return jsonify({"message": f"CSV '{filename}' processed, {len(df)} transactions merged.","filename": filename,"transactions_added": len(df)}), 200
-=======
-        
+
         df = process_uploaded_csv(filepath, mapping_json)
         if df is None:
             return jsonify({"error": "Failed to process CSV with the provided mapping."}), 400
@@ -102,7 +98,7 @@ def upload_csv():
             "filename": filename,
             "transactions_added": len(df)
         }), 200
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
+
     except Exception as e:
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
@@ -110,30 +106,27 @@ def upload_csv():
 def upload_pdf():
     if 'file' not in request.files:
         return jsonify({"error": "No file part in the request"}), 400
-<<<<<<< HEAD
+
     file = request.files['file']
     if file.filename == '' or not file.filename.endswith('.pdf'):
         return jsonify({"error": "Invalid or missing PDF file"}), 400
-=======
-    
+
     file = request.files['file']
     
     if file.filename == '' or not file.filename.endswith('.pdf'):
         return jsonify({"error": "Invalid or missing PDF file"}), 400
 
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
     try:
         filename = werkzeug.utils.secure_filename(file.filename)
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(filepath)
-<<<<<<< HEAD
+
         df = process_uploaded_pdf(filepath)
         if df is None:
             return jsonify({"error": "Failed to extract transactions from the PDF."}), 400
         db_provider.add_transactions_from_df(df)
         return jsonify({"message": f"PDF '{filename}' processed, {len(df)} transactions merged.","filename": filename,"transactions_added": len(df)}), 200
-=======
-        
+
         df = process_uploaded_pdf(filepath)
         if df is None:
             return jsonify({"error": "Failed to extract transactions from the PDF."}), 400
@@ -144,7 +137,7 @@ def upload_pdf():
             "filename": filename,
             "transactions_added": len(df)
         }), 200
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
+
     except Exception as e:
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
@@ -180,12 +173,12 @@ def get_graph():
 @app.route('/api/analyze-graph/<string:account_id>', methods=['GET'])
 def analyze_account_graph(account_id):
     try:
-<<<<<<< HEAD
+
         graph_data = db_provider.get_transaction_graph(account_id, limit=100)
         if not graph_data or not graph_data['nodes']:
             return jsonify({"message": f"No graph data found for account {account_id}"}), 404
         gnn_results = model_provider.predict_with_gnn(graph_data)
-=======
+
         # Fetch the subgraph for the account from Neo4j
         graph_data = db_provider.get_transaction_graph(account_id, limit=100)
         if not graph_data or not graph_data['nodes']:
@@ -194,7 +187,7 @@ def analyze_account_graph(account_id):
         # Get predictions for the subgraph using the GNN
         gnn_results = model_provider.predict_with_gnn(graph_data)
         
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
+
         return jsonify(gnn_results), 200
     except Exception as e:
         return jsonify({"error": f"An error occurred during graph analysis: {str(e)}"}), 500
@@ -202,12 +195,12 @@ def analyze_account_graph(account_id):
 @app.route('/api/account-summary/<string:account_id>', methods=['GET'])
 def get_account_summary(account_id):
     try:
-<<<<<<< HEAD
+
         history_df = db_provider.get_account_history(account_id)
         if history_df is None or history_df.empty:
             return jsonify({"summary": "No transaction history found for this account."}), 404
         summary = model_provider.generate_summary(history_df)
-=======
+
         # Fetch transaction history from the graph database
         history_df = db_provider.get_account_history(account_id)
         if history_df is None or history_df.empty:
@@ -216,12 +209,11 @@ def get_account_summary(account_id):
         # Generate the summary using our model provider
         summary = model_provider.generate_summary(history_df)
         
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
+
         return jsonify({"account_id": account_id, "summary": summary}), 200
     except Exception as e:
         return jsonify({"error": f"An error occurred during summarization: {str(e)}"}), 500
 
-<<<<<<< HEAD
 # --- ANALYSIS ENDPOINTS ---
 @app.route('/api/graph/find-cycles', methods=['GET'])
 def find_cycles_endpoint():
@@ -318,8 +310,6 @@ def trace_investigate():
         except Exception as e:
             return jsonify({"error": f"Could not perform trace investigation: {str(e)}"}), 500
 
-=======
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)@app.route('/api/transaction', methods=['POST'])
 def handle_realtime_transaction():

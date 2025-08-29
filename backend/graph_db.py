@@ -1,4 +1,4 @@
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
+
 from py2neo import Graph, Node, Relationship
 import pandas as pd
 from config import Config
@@ -20,8 +20,7 @@ class GraphDatabase:
             print("No graph connection available.")
             return
         try:
-<<<<<<< HEAD
-=======
+
             # This constraint ensures that Account nodes are unique based on their ID
             # and significantly speeds up the MERGE operations.
             self.graph.run("CREATE CONSTRAINT IF NOT EXISTS FOR (a:Account) REQUIRE a.id IS UNIQUE")
@@ -39,16 +38,16 @@ class GraphDatabase:
             sender_id = str(row['nameOrig'])
             receiver_id = str(row['nameDest'])
             
-=======
+
             # MERGE finds an existing node or creates a new one, preventing duplicates.
->>>>>>> 878aa4807e99ba5a524b32f89c231a7c1196f533
+
             sender_node = Node("Account", id=sender_id)
             tx.merge(sender_node, "Account", "id")
             
             receiver_node = Node("Account", id=receiver_id)
             tx.merge(receiver_node, "Account", "id")
             
-<<<<<<< HEAD
+
             transaction_rel = Relationship(
                 sender_node, 
                 row['type'], 
