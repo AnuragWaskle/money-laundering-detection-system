@@ -1,0 +1,19 @@
+﻿# Python virtual environment
+backend/venv/
+
+# Node modules and Vite build artifacts
+frontend/node_modules/
+frontend/node_modules/.vite/
+
+# Other common ignores
+*.log
+*.pyc
+__pycache__/
+*.DS_Store
+ml/data/raw/PS_20174392719_1491204439457_log.csv
+
+# Python virtual environments
+venv/
+.env/
+*.pyc
+__pycache__/

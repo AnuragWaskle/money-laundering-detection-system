@@ -1,0 +1,77 @@
+.dashboard {
+  background-color: #0a0a14;
+  color: #e0e0e0;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr 400px; /* Control | Graph | Info */
+  flex-grow: 1;
+  height: calc(100vh - 75px); /* Full height minus navbar */
+}
+
+.graph-main-panel {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.graph-main-panel h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.graph-wrapper {
+  position: relative;
+  flex-grow: 1;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+
+.placeholder-graph {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #a0a0a0;
+}
+
+.placeholder-graph svg {
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.error-message {
+  color: #ff4d4d;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+@media (max-width: 1200px) {
+  .main-layout {
+    grid-template-columns: 300px 1fr; /* Hide info panel */
+  }
+  .info-panel {
+    display: none; /* Or implement as a slide-out panel */
+  }
+}
+
+@media (max-width: 768px) {
+  .main-layout {
+    grid-template-columns: 1fr; /* Single column layout */
+  }
+  .control-panel {
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .graph-main-panel {
+    height: 60vh;
+  }
+}

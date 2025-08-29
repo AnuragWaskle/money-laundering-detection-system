@@ -1,0 +1,6 @@
+﻿exclude:
+  - frontend/node_modules/
+  - backend/
+  - ml/
+  - extension/
+  - node_modules/

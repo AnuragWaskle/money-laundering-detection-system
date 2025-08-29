@@ -1,0 +1,90 @@
+.case-management-page {
+  background-color: #0a0a14;
+  min-height: 100vh;
+  color: #e0e0e0;
+}
+
+.case-content {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.case-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+}
+
+.case-header h1 {
+  font-size: 2.5rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.case-table-container {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.case-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.case-table th, .case-table td {
+  padding: 1rem;
+  text-align: left;
+}
+
+.case-table thead {
+  border-bottom: 2px solid rgba(0, 242, 255, 0.5);
+}
+
+.case-table th {
+  font-size: 1rem;
+  color: #00f2ff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.case-table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.case-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.case-table tbody tr:hover {
+  background-color: rgba(0, 242, 255, 0.05);
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.status-open {
+  background-color: rgba(255, 171, 0, 0.2);
+  color: #ffab00;
+}
+
+.status-closed {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #c0c0c0;
+}
+
+.case-table .btn-secondary {
+  padding: 0.5rem 1rem;
+}

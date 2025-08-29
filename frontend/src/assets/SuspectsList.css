@@ -1,0 +1,81 @@
+.suspects-list-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #e0e0e0;
+  font-size: 1rem;
+  outline: none;
+}
+
+.suspects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.suspect-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-left 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.suspect-item:hover {
+  background-color: rgba(0, 242, 255, 0.1);
+  border-left: 3px solid #00f2ff;
+}
+
+.suspect-icon {
+  color: #00f2ff;
+}
+
+.suspect-id {
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suspect-risk {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.risk-high {
+  background-color: rgba(255, 77, 77, 0.2);
+  color: #ff4d4d;
+}
+
+.risk-medium {
+  background-color: rgba(255, 171, 0, 0.2);
+  color: #ffab00;
+}
+
+.risk-critical {
+  background-color: rgba(255, 0, 0, 0.4);
+  color: #ff0000;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+}

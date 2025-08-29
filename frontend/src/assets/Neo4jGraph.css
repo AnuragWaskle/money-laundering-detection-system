@@ -1,0 +1,67 @@
+.neo4j-graph-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #0a0a14;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.graph-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.toolbar-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #e0e0e0;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.toolbar-btn:hover {
+  background-color: rgba(0, 242, 255, 0.2);
+}
+
+.case-id-display {
+  margin-left: auto;
+  font-size: 0.9rem;
+  color: #c0c0c0;
+}
+
+.graph-viewport {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #a0a0a0;
+  text-align: center;
+}
+
+.graph-viewport svg {
+  color: rgba(255, 255, 255, 0.1);
+  margin-bottom: 1rem;
+}
+
+.graph-viewport p {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.graph-viewport span {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.2);
+}
