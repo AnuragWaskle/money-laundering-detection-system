@@ -484,8 +484,6 @@ curl -X GET "http://localhost:5001/health"
 
 ## 🤝 Contributing
 
-We welcome contributions! Please read our contributing guidelines and submit pull requests for any improvements.
-
 ### Development Workflow
 1. Fork the repository
 2. Create a feature branch
