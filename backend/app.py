@@ -20,6 +20,7 @@ from validation import (
     require_valid_json,
     validate_request_size
 )
+from advanced_risk_scorer import AdvancedRiskScorer
 
 # Configure logging
 logging.basicConfig(
@@ -38,6 +39,9 @@ app.config.from_object(config_by_name.get(env, config_by_name['default']))
 # Setup upload folder
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
+
+# Initialize advanced risk scorer
+risk_scorer = AdvancedRiskScorer(db_provider)
 
 # Validation helpers
 def validate_json_request(required_fields=None):
@@ -512,6 +516,342 @@ def trace_investigate():
         except Exception as e:
             logger.error(f"Error in trace investigation: {str(e)}")
             return jsonify({"error": "Trace investigation failed"}), 500
+
+# Advanced Money Laundering Detection Endpoints
+@app.route('/api/advanced-risk-score/<string:account_id>', methods=['GET'])
+@handle_database_errors
+def get_advanced_risk_score(account_id):
+    """Get comprehensive risk score with detailed analysis"""
+    try:
+        # Clean and validate account ID
+        try:
+            clean_id = clean_account_id(account_id)
+        except SecurityError as e:
+            return jsonify({"error": str(e)}), 400
+        
+        # Calculate comprehensive risk score
+        risk_analysis = risk_scorer.calculate_comprehensive_risk_score(clean_id)
+        
+        if "error" in risk_analysis:
+            return jsonify(risk_analysis), 500
+        
+        logger.info(f"Generated advanced risk score for account {clean_id}")
+        return jsonify(risk_analysis), 200
+        
+    except Exception as e:
+        logger.error(f"Error calculating advanced risk score: {str(e)}")
+        return jsonify({"error": "Risk analysis failed"}), 500
+
+@app.route('/api/money-flow-tracking/<string:account_id>', methods=['GET'])
+@handle_database_errors
+def track_money_flow(account_id):
+    """Track money flow across multiple accounts and entities"""
+    try:
+        # Clean and validate account ID
+        try:
+            clean_id = clean_account_id(account_id)
+        except SecurityError as e:
+            return jsonify({"error": str(e)}), 400
+        
+        # Get parameters
+        max_depth = request.args.get('max_depth', 5, type=int)
+        max_depth = min(max_depth, 10)  # Limit to prevent excessive queries
+        
+        # Track money flow
+        flow_analysis = risk_scorer.track_money_flow(clean_id, max_depth)
+        
+        if "error" in flow_analysis:
+            return jsonify(flow_analysis), 500
+        
+        logger.info(f"Tracked money flow for account {clean_id}")
+        return jsonify(flow_analysis), 200
+        
+    except Exception as e:
+        logger.error(f"Error tracking money flow: {str(e)}")
+        return jsonify({"error": "Money flow tracking failed"}), 500
+
+@app.route('/api/layering-detection/<string:account_id>', methods=['GET'])
+@handle_database_errors
+def detect_layering_schemes(account_id):
+    """Detect complex layering schemes and circular transactions"""
+    try:
+        # Clean and validate account ID
+        try:
+            clean_id = clean_account_id(account_id)
+        except SecurityError as e:
+            return jsonify({"error": str(e)}), 400
+        
+        # Detect layering schemes
+        layering_analysis = risk_scorer.detect_layering_schemes(clean_id)
+        
+        if "error" in layering_analysis:
+            return jsonify(layering_analysis), 500
+        
+        logger.info(f"Analyzed layering schemes for account {clean_id}")
+        return jsonify(layering_analysis), 200
+        
+    except Exception as e:
+        logger.error(f"Error detecting layering schemes: {str(e)}")
+        return jsonify({"error": "Layering detection failed"}), 500
+
+@app.route('/api/circular-transactions', methods=['GET'])
+@handle_database_errors
+def find_circular_transactions():
+    """Find circular money flows across the entire network"""
+    try:
+        # Get parameters
+        min_amount = request.args.get('min_amount', 5000, type=float)
+        max_cycle_length = request.args.get('max_cycle_length', 8, type=int)
+        
+        # Validate parameters
+        min_amount = max(min_amount, 1000)  # Minimum $1000
+        max_cycle_length = min(max_cycle_length, 10)  # Maximum 10 hops
+        
+        # Find circular transactions
+        cycles = db_provider.detect_circular_transactions(min_amount, max_cycle_length)
+        
+        response = {
+            "total_cycles": len(cycles),
+            "cycles": cycles,
+            "search_parameters": {
+                "min_amount": min_amount,
+                "max_cycle_length": max_cycle_length
+            },
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+        logger.info(f"Found {len(cycles)} circular transaction patterns")
+        return jsonify(response), 200
+        
+    except Exception as e:
+        logger.error(f"Error finding circular transactions: {str(e)}")
+        return jsonify({"error": "Circular transaction detection failed"}), 500
+
+@app.route('/api/shell-company-networks', methods=['GET'])
+@handle_database_errors
+def find_shell_company_networks():
+    """Identify potential shell company networks"""
+    try:
+        # Find shell company networks
+        networks = db_provider.find_shell_company_networks()
+        
+        response = {
+            "total_networks": len(networks),
+            "networks": networks,
+            "analysis": {
+                "high_risk_networks": [n for n in networks if len(n.get('shell_indicators', [])) >= 2],
+                "total_flow_volume": sum(n.get('total_flow', 0) for n in networks),
+                "unique_entities": len(set(
+                    entity for network in networks 
+                    for entity in [network.get('source'), network.get('intermediary'), network.get('destination')]
+                    if entity
+                ))
+            },
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+        logger.info(f"Found {len(networks)} potential shell company networks")
+        return jsonify(response), 200
+        
+    except Exception as e:
+        logger.error(f"Error finding shell company networks: {str(e)}")
+        return jsonify({"error": "Shell company network detection failed"}), 500
+
+@app.route('/api/cash-pattern-analysis', methods=['GET'])
+@handle_database_errors
+def analyze_cash_patterns():
+    """Analyze cash-intensive transaction patterns"""
+    try:
+        # Get parameters
+        min_cash_amount = request.args.get('min_amount', 10000, type=float)
+        min_cash_amount = max(min_cash_amount, 1000)  # Minimum $1000
+        
+        # Analyze cash patterns
+        patterns = db_provider.analyze_cash_intensive_patterns(min_cash_amount)
+        
+        # Calculate aggregate statistics
+        total_cash_volume = sum(p.get('total_cash_out', 0) + p.get('total_cash_in', 0) for p in patterns)
+        high_risk_patterns = [p for p in patterns if p.get('risk_score', 0) > 0.6]
+        
+        response = {
+            "total_patterns": len(patterns),
+            "high_risk_patterns": len(high_risk_patterns),
+            "total_cash_volume": total_cash_volume,
+            "patterns": patterns,
+            "search_parameters": {
+                "min_cash_amount": min_cash_amount
+            },
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+        logger.info(f"Analyzed {len(patterns)} cash transaction patterns")
+        return jsonify(response), 200
+        
+    except Exception as e:
+        logger.error(f"Error analyzing cash patterns: {str(e)}")
+        return jsonify({"error": "Cash pattern analysis failed"}), 500
+
+@app.route('/api/offshore-patterns', methods=['GET'])
+@handle_database_errors
+def find_offshore_patterns():
+    """Find patterns involving offshore accounts and jurisdictions"""
+    try:
+        # Find offshore patterns
+        patterns = db_provider.find_offshore_connection_patterns()
+        
+        # Analyze patterns
+        total_offshore_volume = sum(p.get('amount', 0) for p in patterns)
+        by_pattern_type = {}
+        
+        for pattern in patterns:
+            pattern_type = pattern.get('pattern_type', 'unknown')
+            if pattern_type not in by_pattern_type:
+                by_pattern_type[pattern_type] = []
+            by_pattern_type[pattern_type].append(pattern)
+        
+        response = {
+            "total_patterns": len(patterns),
+            "total_offshore_volume": total_offshore_volume,
+            "pattern_breakdown": {
+                pattern_type: {
+                    "count": len(pattern_list),
+                    "total_volume": sum(p.get('amount', 0) for p in pattern_list)
+                }
+                for pattern_type, pattern_list in by_pattern_type.items()
+            },
+            "patterns": patterns,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+        logger.info(f"Found {len(patterns)} offshore transaction patterns")
+        return jsonify(response), 200
+        
+    except Exception as e:
+        logger.error(f"Error finding offshore patterns: {str(e)}")
+        return jsonify({"error": "Offshore pattern analysis failed"}), 500
+
+@app.route('/api/network-centrality/<string:account_id>', methods=['GET'])
+@handle_database_errors
+def get_network_centrality(account_id):
+    """Get network centrality metrics for risk assessment"""
+    try:
+        # Clean and validate account ID
+        try:
+            clean_id = clean_account_id(account_id)
+        except SecurityError as e:
+            return jsonify({"error": str(e)}), 400
+        
+        # Calculate centrality metrics
+        centrality_metrics = db_provider.calculate_account_centrality_metrics(clean_id)
+        
+        if not centrality_metrics:
+            return jsonify({
+                "message": f"No network data found for account {clean_id}"
+            }), 404
+        
+        # Add timestamp
+        centrality_metrics["timestamp"] = datetime.utcnow().isoformat()
+        
+        logger.info(f"Calculated centrality metrics for account {clean_id}")
+        return jsonify(centrality_metrics), 200
+        
+    except Exception as e:
+        logger.error(f"Error calculating network centrality: {str(e)}")
+        return jsonify({"error": "Network centrality calculation failed"}), 500
+
+@app.route('/api/comprehensive-analysis/<string:account_id>', methods=['GET'])
+@handle_database_errors
+def get_comprehensive_analysis(account_id):
+    """Get comprehensive analysis combining all detection methods"""
+    try:
+        # Clean and validate account ID
+        try:
+            clean_id = clean_account_id(account_id)
+        except SecurityError as e:
+            return jsonify({"error": str(e)}), 400
+        
+        # Perform comprehensive analysis
+        risk_analysis = risk_scorer.calculate_comprehensive_risk_score(clean_id)
+        money_flow = risk_scorer.track_money_flow(clean_id, max_depth=4)
+        layering_analysis = risk_scorer.detect_layering_schemes(clean_id)
+        centrality_metrics = db_provider.calculate_account_centrality_metrics(clean_id)
+        
+        # Compile comprehensive report
+        comprehensive_report = {
+            "account_id": clean_id,
+            "risk_analysis": risk_analysis,
+            "money_flow_tracking": money_flow,
+            "layering_detection": layering_analysis,
+            "network_centrality": centrality_metrics,
+            "overall_assessment": {
+                "risk_level": risk_analysis.get("risk_level", "UNKNOWN"),
+                "risk_score": risk_analysis.get("risk_score", 0.0),
+                "key_concerns": _extract_key_concerns(risk_analysis, money_flow, layering_analysis),
+                "recommended_actions": _generate_recommendations(risk_analysis)
+            },
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+        logger.info(f"Generated comprehensive analysis for account {clean_id}")
+        return jsonify(comprehensive_report), 200
+        
+    except Exception as e:
+        logger.error(f"Error in comprehensive analysis: {str(e)}")
+        return jsonify({"error": "Comprehensive analysis failed"}), 500
+
+def _extract_key_concerns(risk_analysis, money_flow, layering_analysis):
+    """Extract key concerns from analysis results"""
+    concerns = []
+    
+    # Extract from risk analysis
+    if risk_analysis.get("risk_score", 0) > 0.7:
+        concerns.append("High overall risk score")
+    
+    risk_factors = risk_analysis.get("risk_factors", [])
+    high_risk_factors = [f for f in risk_factors if f.get("score", 0) > 0.6]
+    for factor in high_risk_factors:
+        concerns.append(f"High {factor.get('name', 'unknown')} risk")
+    
+    # Extract from money flow
+    suspicious_patterns = money_flow.get("suspicious_patterns", [])
+    if suspicious_patterns:
+        concerns.append(f"{len(suspicious_patterns)} suspicious money flow patterns")
+    
+    # Extract from layering analysis
+    cycles_detected = layering_analysis.get("cycles_detected", 0)
+    if cycles_detected > 0:
+        concerns.append(f"{cycles_detected} circular transaction patterns detected")
+    
+    return concerns
+
+def _generate_recommendations(risk_analysis):
+    """Generate recommendations based on risk analysis"""
+    recommendations = []
+    
+    risk_score = risk_analysis.get("risk_score", 0)
+    risk_level = risk_analysis.get("risk_level", "LOW")
+    
+    if risk_score > 0.8:
+        recommendations.extend([
+            "Immediate manual review required",
+            "Consider filing SAR (Suspicious Activity Report)",
+            "Enhanced due diligence recommended"
+        ])
+    elif risk_score > 0.6:
+        recommendations.extend([
+            "Enhanced monitoring recommended",
+            "Additional documentation required",
+            "Review transaction patterns"
+        ])
+    elif risk_score > 0.3:
+        recommendations.extend([
+            "Continued monitoring",
+            "Periodic review of activity"
+        ])
+    else:
+        recommendations.append("Standard monitoring sufficient")
+    
+    return recommendations
 
 # Error handlers
 @app.errorhandler(404)
