@@ -1,20 +1,36 @@
+# Core Web Framework
 Flask==3.1.2
 Flask-Cors==6.0.1
+
+# Configuration
 python-dotenv==1.1.1
+
+# Database
 py2neo==2021.2.4
+
+# Data Processing
 pandas==2.3.2
 numpy>=1.23.5,<2.0.0
+
+# Machine Learning Core
 scikit-learn==1.7.1
 xgboost==3.0.4
-Werkzeug==3.1.3
 joblib==1.5.1
-PyMuPDF==1.26.4
 shap==0.48.0
+
+# Deep Learning - PyTorch (for GNN)
 torch==2.8.0
 torch-geometric==2.6.1
+
+# Natural Language Processing
 transformers==4.55.4
 sentencepiece==0.2.1
-tensorflow==2.15.0
-matplotlib==3.6.2
-seaborn==0.12.1
-imbalanced-learn==0.10.1
+
+# Graph Analysis
+networkx>=2.8
+
+# File Processing
+PyMuPDF==1.26.4
+
+# Testing Dependencies (optional - only for test files)
+# requests (already included as transformers dependency)

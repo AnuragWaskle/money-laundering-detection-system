@@ -7,8 +7,17 @@ import torch
 from torch_geometric.data import Data
 from torch_geometric.nn import SAGEConv
 from transformers import pipeline, logging
-from keras.models import load_model
-from keras.preprocessing.sequence import pad_sequences
+
+# Try to import TensorFlow/Keras components, but make them optional
+try:
+    from keras.models import load_model
+    from keras.preprocessing.sequence import pad_sequences
+    KERAS_AVAILABLE = True
+except ImportError:
+    print("Warning: Keras/TensorFlow not available. LSTM trace models will be disabled.")
+    KERAS_AVAILABLE = False
+    load_model = None
+    pad_sequences = None
 
 # Suppress verbose logging from Hugging Face
 logging.set_verbosity_error()

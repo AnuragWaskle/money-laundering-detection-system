@@ -1,0 +1,24 @@
+# Development and Testing Dependencies
+# Install with: pip install -r requirements-dev.txt
+
+# Include production requirements
+-r requirements.txt
+
+# Testing
+requests==2.32.5
+
+# Data Visualization (for development/analysis)
+matplotlib==3.6.2
+seaborn==0.12.1
+
+# Advanced ML (optional)
+imbalanced-learn==0.10.1
+
+# TensorFlow (optional - for LSTM models if needed)
+# tensorflow==2.15.0
+
+# Development Tools
+pytest>=7.0.0
+pytest-cov>=4.0.0
+black>=22.0.0
+flake8>=5.0.0
